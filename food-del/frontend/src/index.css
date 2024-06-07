@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: 'Outfit', sans-serif;
   scroll-behavior: smooth;
-  background-color: rgb(23, 19, 58);
-  color: #fff;
+  color: #000;
 }
+
 
 body {
   min-height: 100vh;
@@ -22,6 +26,18 @@ a {
 .app {
   width: 80%;
   margin: auto;
+}
+
+.bg-cover {
+  background-size: cover;
+}
+
+.bg-center {
+  background-position: center;
+}
+
+.animate-fade-in {
+  animation: fadeIn 3s;
 }
 
 @keyframes fadeIn {

@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react'
-import './PlaceOrder.css'
 import { StoreContext } from '../../Context/StoreContext'
 import { assets } from '../../assets/assets';
 import { useNavigate } from 'react-router-dom';
@@ -65,36 +64,42 @@ const PlaceOrder = () => {
     }, [token])
 
     return (
-        <form onSubmit={placeOrder} className='place-order'>
-            <div className="place-order-left">
-                <p className='title'>Delivery Information</p>
-                <div className="multi-field">
-                    <input type="text" name='firstName' onChange={onChangeHandler} value={data.firstName} placeholder='First name' required />
-                    <input type="text" name='lastName' onChange={onChangeHandler} value={data.lastName} placeholder='Last name' required />
+        <form onSubmit={placeOrder} className='flex items-start justify-between gap-12 my-24 flex-col lg:flex-row'>
+            <div className="w-full max-w-[30%] lg:max-w-[30%] xl:max-w-[500px]">
+                <p className='text-2xl font-semibold mb-12'>Delivery Information</p>
+                <div className="flex gap-2 mb-4">
+                    <input type="text" name='firstName' onChange={onChangeHandler} value={data.firstName} placeholder='First name' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
+                    <input type="text" name='lastName' onChange={onChangeHandler} value={data.lastName} placeholder='Last name' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
                 </div>
-                <input type="email" name='email' onChange={onChangeHandler} value={data.email} placeholder='Email address' required />
-                <input type="text" name='street' onChange={onChangeHandler} value={data.street} placeholder='Street' required />
-                <div className="multi-field">
-                    <input type="text" name='city' onChange={onChangeHandler} value={data.city} placeholder='City' required />
-                    <input type="text" name='state' onChange={onChangeHandler} value={data.state} placeholder='State' required />
+                <input type="email" name='email' onChange={onChangeHandler} value={data.email} placeholder='Email address' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
+                <input type="text" name='street' onChange={onChangeHandler} value={data.street} placeholder='Street' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
+                <div className="flex gap-2 mb-4">
+                    <input type="text" name='city' onChange={onChangeHandler} value={data.city} placeholder='City' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
+                    <input type="text" name='state' onChange={onChangeHandler} value={data.state} placeholder='State' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
                 </div>
-                <div className="multi-field">
-                    <input type="text" name='country' onChange={onChangeHandler} value={data.country} placeholder='Country' required />
+                <div className="flex gap-2 mb-4">
+                    <input type="text" name='country' onChange={onChangeHandler} value={data.country} placeholder='Country' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
                 </div>
-                <input type="text" name='phone' onChange={onChangeHandler} value={data.phone} placeholder='Phone' required />
+                <input type="text" name='phone' onChange={onChangeHandler} value={data.phone} placeholder='Phone' required className="mb-4 w-full p-3 border border-gray-300 rounded outline-none focus:outline-tomato" />
             </div>
-            <div className="place-order-right">
-                <div className="cart-total">
-                    <h2>Cart Totals</h2>
+            <div className="w-full max-w-[40%] lg:max-w-[40%] xl:max-w-[500px]">
+                <div className="bg-white p-6 rounded-lg shadow-md">
+                    <h2 className='text-xl font-semibold mb-6'>Cart Totals</h2>
                     <div>
-                        <div className="cart-total-details"><p>Subtotal</p><p>${getTotalCartAmount()}</p></div>
+                        <div className="flex justify-between text-gray-700 mb-4">
+                            <p>Subtotal</p><p>${getTotalCartAmount()}</p>
+                        </div>
                         <hr />
-                        <div className="cart-total-details"><p>Delivery Fee</p><p>${getTotalCartAmount() === 0 ? 0 : 5}</p></div>
+                        <div className="flex justify-between text-gray-700 my-4">
+                            <p>Delivery Fee</p><p>${getTotalCartAmount() === 0 ? 0 : 5}</p>
+                        </div>
                         <hr />
-                        <div className="cart-total-details"><b>Total</b><b>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 5}</b></div>
+                        <div className="flex justify-between text-gray-700 mt-4">
+                            <b>Total</b><b>${getTotalCartAmount() === 0 ? 0 : getTotalCartAmount() + 5}</b>
+                        </div>
                     </div>
                 </div>
-                <button className='place-order-submit' type='submit'>Proceed To Payment</button>
+                <button className='mt-12 border right-0 bg-orange-500 text-black py-3 px-6 rounded cursor-pointer w-50' type='submit'>Proceed To Payment</button>
             </div>
         </form>
     )
