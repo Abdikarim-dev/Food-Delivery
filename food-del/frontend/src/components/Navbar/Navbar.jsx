@@ -6,7 +6,8 @@ import { StoreContext } from '../../Context/StoreContext';
 const Navbar = ({ setShowLogin }) => {
   const [menu, setMenu] = useState('home');
   const [showProfileDropdown, setShowProfileDropdown] = useState(false);
-  const { getTotalCartAmount, token, setToken } = useContext(StoreContext);
+  const [theme, setTheme] = useState('light'); // Track current theme
+  const { getTotalCartQuantity, token, setToken } = useContext(StoreContext);
   const navigate = useNavigate();
   const profileRef = useRef(null);
 
@@ -29,6 +30,10 @@ const Navbar = ({ setShowLogin }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const toggleTheme = () => {
+    setTheme(theme === 'light' ? 'dark' : 'light');
+  };
 
   return (
     <div className='flex justify-between items-center py-5'>
@@ -57,15 +62,23 @@ const Navbar = ({ setShowLogin }) => {
         </Link>
       </ul>
       <div className='flex items-center gap-10'>
-        <img src={assets.search_icon} alt='Search' className='cursor-pointer' />
+        <img
+          src={theme === 'light' ? assets.lightMode : assets.darkMode}
+          alt='Search'
+          className='cursor-pointer'
+        />
         <Link to='/cart' className='relative'>
           <img src={assets.basket_icon} alt='Cart' className='cursor-pointer' />
-          <div className={`${getTotalCartAmount() > 0 ? 'absolute bg-red-600 rounded-full w-2.5 h-2.5 top-0 right-0' : ''}`}></div>
+          {getTotalCartQuantity() > 0 && (
+            <div className='absolute top-0 right-0 bg-red-600 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs'>
+              {getTotalCartQuantity()}
+            </div>
+          )}
         </Link>
         {!token ? (
           <button
             onClick={() => setShowLogin(true)}
-            className='bg-transparent text-gray-700 border border-red-600 py-2 px-6 rounded-full transition duration-300 hover:bg-red-100'
+            className='bg-transparent text-gray-700 border border-red-600 py-2 px-6 rounded-full transition duration-300 hover:bg-orange-500'
           >
             Sign In
           </button>
@@ -78,7 +91,7 @@ const Navbar = ({ setShowLogin }) => {
               className='cursor-pointer'
             />
             {showProfileDropdown && (
-              <ul className='absolute right-0  z-10 flex-col gap-2 p-3   border  w-40 bg-white divide-y divide-gray-100 rounded-lg  dark:bg-orange-300 dark:divide-gray-600 border-gray-300 shadow-lg'>
+              <ul className='absolute right-0 z-10 flex-col gap-2 p-3 border w-40 bg-white divide-y divide-gray-100 rounded-lg dark:bg-orange-300 dark:divide-gray-600 border-gray-300 shadow-lg'>
                 <li
                   onClick={() => {
                     setShowProfileDropdown(false);
@@ -86,7 +99,6 @@ const Navbar = ({ setShowLogin }) => {
                   }}
                   className='flex items-center gap-2 mb-1 cursor-pointer hover:text-red-600'
                 >
-                  {' '}
                   <img src={assets.bag_icon} alt='Orders' /> <p>Orders</p>
                 </li>
                 <hr className='bg-gray-300 h-px border-0' />
@@ -95,15 +107,15 @@ const Navbar = ({ setShowLogin }) => {
                     setShowProfileDropdown(false);
                     logout();
                   }}
-                  className='flex items-center gap-2  cursor-pointer hover:text-red-600'
+                  className='flex items-center gap-2 cursor-pointer hover:text-red-600'
                 >
-                  {' '}
                   <img src={assets.logout_icon} alt='Logout' /> <p>Logout</p>
                 </li>
               </ul>
             )}
           </div>
         )}
+        
       </div>
     </div>
   );

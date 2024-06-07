@@ -1,32 +1,34 @@
 import { createContext, useEffect, useState } from "react";
-import { food_list, menu_list } from "../assets/assets";
 import axios from "axios";
 export const StoreContext = createContext(null);
 
 const StoreContextProvider = (props) => {
-
     const url = "http://localhost:4000"
     const [food_list, setFoodList] = useState([]);
     const [cartItems, setCartItems] = useState({});
     const [token, setToken] = useState("")
 
-
     const addToCart = async (itemId) => {
-        if (!cartItems[itemId]) {
-            setCartItems((prev) => ({ ...prev, [itemId]: 1 }));
+        const newCartItems = { ...cartItems };
+        if (!newCartItems[itemId]) {
+            newCartItems[itemId] = 1;
+        } else {
+            newCartItems[itemId]++;
         }
-        else {
-            setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] + 1 }));
-        }
+        setCartItems(newCartItems);
         if (token) {
             await axios.post(url + "/api/cart/add", { itemId }, { headers: { token } });
         }
     }
 
     const removeFromCart = async (itemId) => {
-        setCartItems((prev) => ({ ...prev, [itemId]: prev[itemId] - 1 }))
-        if (token) {
-            await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+        const newCartItems = { ...cartItems };
+        if (newCartItems[itemId] > 0) {
+            newCartItems[itemId]--;
+            setCartItems(newCartItems);
+            if (token) {
+                await axios.post(url + "/api/cart/remove", { itemId }, { headers: { token } });
+            }
         }
     }
 
@@ -39,6 +41,14 @@ const StoreContextProvider = (props) => {
             }
         }
         return totalAmount;
+    }
+
+    const getTotalCartQuantity = () => {
+        let totalQuantity = 0;
+        for (const item in cartItems) {
+            totalQuantity += cartItems[item];
+        }
+        return totalQuantity;
     }
 
     const fetchFoodList = async () => {
@@ -65,11 +75,11 @@ const StoreContextProvider = (props) => {
     const contextValue = {
         url,
         food_list,
-        menu_list,
         cartItems,
         addToCart,
         removeFromCart,
         getTotalCartAmount,
+        getTotalCartQuantity,
         token,
         setToken,
         loadCartData,
@@ -81,7 +91,6 @@ const StoreContextProvider = (props) => {
             {props.children}
         </StoreContext.Provider>
     )
-
 }
 
 export default StoreContextProvider;

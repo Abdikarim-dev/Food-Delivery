@@ -12,7 +12,7 @@ const FoodItem = ({ image, name, price, desc, id }) => {
             <div className='relative'>
                 <img className='w-full rounded-t-lg' src={url + "/images/" + image} alt="" />
                 {!cartItems[id]
-                    ? <img className='w-9 absolute bottom-4 right-4 cursor-pointer rounded-full hover:border-2 hover:border-tomato' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />
+                    ? <img className='w-9 absolute  bottom-4 right-4 cursor-pointer rounded-full hover:border-2 hover:border-tomato' onClick={() => addToCart(id)} src={assets.add_icon_white} alt="" />
                     : <div className="absolute bottom-4 right-4 flex items-center gap-2 p-1.5 rounded-full bg-white">
                         <img src={assets.remove_icon_red} onClick={() => removeFromCart(id)} className='w-8' alt="" />
                         <p>{cartItems[id]}</p>
